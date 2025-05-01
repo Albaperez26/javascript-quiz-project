@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Array with the quiz questions
   const questions = [
-    new Question("What is 2 + 2?", ["3", "4", "5", "6"], "4", 1),
-    new Question("What is the capital of France?", ["Miami", "Paris", "Oslo", "Rome"], "Paris", 1),
-    new Question("Who created JavaScript?", ["Plato", "Brendan Eich", "Lea Verou", "Bill Gates"], "Brendan Eich", 2),
-    new Question("What is the mass–energy equivalence equation?", ["E = mc^2", "E = m*c^2", "E = m*c^3", "E = m*c"], "E = mc^2", 3),
+    new Question("¿Qué pasaría si los gatos dominaran el mundo?", ["Obligarían a los humanos a abrir latas todo el día", "Inventarían un rascador para humanos", "Cambiarían las reglas del ajedrez para que solo gane el gato", " Nada. Ya lo dominan, solo que no te has dado cuenta"], " Nada. Ya lo dominan, solo que no te has dado cuenta", 1),
+    new Question("¿Qué significa cuando Jorge pone patata como nombre de variable o palabra en el código?", ["Que tenía hambre y su código lo sabe.", "Que ha activado el modo secreto fruta o verdura del lenguaje de programación.", "Que patata es un algoritmo de inteligencia artificial que lo resuelve todo mágicamente.", "Que está usando un valor hardcoded como placeholder mientras piensa en algo mejor."], "Que tenía hambre y su código lo sabe.", 1),
+    new Question("¿Qué sucede con tu vida social cuando comienzas un curso intensivo?", ["Tienes tantas tareas que incluso tus amigos piensan que te mudaste a otro planeta.", "Tu vida social se convierte en el grupo de WhatsApp del curso, y es lo único que sabes de la humanidad exterior.", " Te conviertes en un zombi estudiantil que responde a todo con ¿Qué día es hoy?", "Empiezas a hablar con tu taza de café porque ya es tu única amiga."], "Empiezas a hablar con tu taza de café porque ya es tu única amiga.", 2),
+    new Question("¿Quién merece el título de Mejor Gato de la Historia (con corona, trono y plato infinito de atún)?", ["Buzz, ft. Amalia", "Tom", "Garfield", "Gato con botas"], "Buzz, ft. Amalia", 3),
     // Add more questions here
   ];
   const quizDuration = 120; // 120 seconds (2 minutes)
@@ -131,8 +131,22 @@ document.addEventListener("DOMContentLoaded", () => {
       // Hint 2: You can use the `element.type`, `element.name`, and `element.value` properties to set the type, name, and value of an element.
       // Hint 3: You can use the `element.appendChild()` method to append an element to the choices container.
       // Hint 4: You can use the `element.innerText` property to set the inner text of an element.
-       
+     
+      question.choices.forEach(eachChoice => {
+        const radioInput = document.createElement("div");
+        radioInput.innerHTML = `
+        <input type="radio" name="choice" value="${eachChoice}">
+        <label>${eachChoice}</label>
+        <br>`; 
+        choiceContainer.appendChild(radioInput); 
+      });
+
+
+
+
   }
+
+
 
 
   
@@ -146,7 +160,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     //
     // 1. Get all the choice elements. You can use the `document.querySelectorAll()` method.
-
+      
 
     // 2. Loop through all the choice elements and check which one is selected
       // Hint: Radio input elements have a property `.checked` (e.g., `element.checked`).
@@ -158,6 +172,25 @@ document.addEventListener("DOMContentLoaded", () => {
       // Check if selected answer is correct by calling the quiz method `checkAnswer()` with the selected answer.
       // Move to the next question by calling the quiz method `moveToNextQuestion()`.
       // Show the next question by calling the function `showQuestion()`.
+
+      const choiceElements = document.querySelectorAll("input")
+      choiceElements.forEach(eachResponse => {
+        if(eachResponse.checked) {
+          selectedAnswer = eachResponse.value;
+        }
+      });
+
+      if(selectedAnswer) {
+        quiz.checkAnswer(selectedAnswer)
+        quiz.moveToNextQuestion();
+        showQuestion();
+      }
+      
+      
+      
+      
+    
+      
   }  
 
 
@@ -168,13 +201,20 @@ document.addEventListener("DOMContentLoaded", () => {
     // YOUR CODE HERE:
     //
     // 1. Hide the quiz view (div#quizView)
+    const quizView = document.querySelector("div#quizView")
     quizView.style.display = "none";
 
     // 2. Show the end view (div#endView)
+    const endView = document.querySelector("div#endView")
     endView.style.display = "flex";
     
     // 3. Update the result container (div#result) inner text to show the number of correct answers out of total questions
-    resultContainer.innerText = `You scored 1 out of 1 correct answers!`; // This value is hardcoded as a placeholder
+    const resultContainer = document.querySelector("div#result")
+    resultContainer.innerText = `You scored ${quiz.correctAnswers} out of ${quiz.currentQuestionIndex} correct answers!`; // This value is hardcoded as a placeholder
   }
   
 });
+
+
+//${quiz.currentQuestionIndex + 1} of ${quiz.questions.length}`
+//${(quiz.currentQuestionIndex + 1) / (quiz.questions.length) * 100}%` 

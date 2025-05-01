@@ -25,11 +25,11 @@ class Quiz {
     }
 
     checkAnswer(answer) {
-
+        
         const trueQuestion = this.questions[this.currentQuestionIndex];
-        if ( this.answer === trueQuestion.correctAnswers) {
+        if ( answer === trueQuestion.answer) {
             this.correctAnswers +=1;
-            return true;
+           
         }
     }
 
